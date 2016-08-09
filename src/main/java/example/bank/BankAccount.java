@@ -19,6 +19,9 @@ public class BankAccount {
 	}
 
 	public synchronized void deposit(int dollarsToDeposit) {
+		if(dollarsToDeposit < 0) {
+			throw new RuntimeException("Deposit amount is negative");
+		}
 		balance += dollarsToDeposit;
 	}
 
