@@ -69,4 +69,17 @@ public class WithdrawDepositTest {
 		Assert.assertEquals(100, amountWithdrawn);
 		Assert.assertEquals(0, myAcct.getBalance());
 	}
+
+	@Test
+	public void testDeposit() {
+		BankAccount myAcct = new BankAccount();
+		boolean caughtException;
+		try {
+			myAcct.deposit(-1);
+			caughtException = false;
+		} catch(RuntimeException e) {
+			caughtException = true;
+		}
+		Assert.assertTrue(caughtException);
+	}
 }
