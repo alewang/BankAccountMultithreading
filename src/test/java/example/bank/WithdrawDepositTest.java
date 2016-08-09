@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @RunWith(JUnit4.class)
 public class WithdrawDepositTest {
-	private final static long ONE_MINUTE_MILLIS = 60 * 1000;
+	private final static long ONE_MINUTE_MILLIS = 10 * 1000;
 	private final static int TRANSFER_AMOUNT = 200;
 
 	@Test
@@ -20,7 +20,7 @@ public class WithdrawDepositTest {
 		BankAccount myAccount = new BankAccount();
 		myAccount.deposit(10000);
 
-		final int startingAcctBalance = myAccount.getBalance();
+		final int startingAmount = myAccount.getBalance();
 
 		final AtomicInteger moneyInWallet = new AtomicInteger(0);
 		final long endTime = System.currentTimeMillis() + ONE_MINUTE_MILLIS;
@@ -51,6 +51,22 @@ public class WithdrawDepositTest {
 		withdrawer.join();
 		depositor.join();
 
-		Assert.assertEquals(myAccount.getBalance(), startingAcctBalance);
+		final int endingAmount = moneyInWallet.get() + myAccount.getBalance();
+
+		Assert.assertEquals(startingAmount, endingAmount);
+	}
+
+	@Test
+	public void testWithdrawal() {
+		BankAccount myAcct = new BankAccount();
+		myAcct.deposit(1000);
+		myAcct.withdraw(1000);
+		Assert.assertEquals(0, myAcct.getBalance());
+
+		myAcct = new BankAccount();
+		myAcct.deposit(100);
+		int amountWithdrawn = myAcct.withdraw(101);
+		Assert.assertEquals(100, amountWithdrawn);
+		Assert.assertEquals(0, myAcct.getBalance());
 	}
 }
