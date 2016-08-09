@@ -12,17 +12,28 @@ package example.bank;
  * Created by alex on 8/9/16.
  */
 public class BankAccount {
-	public void deposit(int dollarsToDeposit) {
-		//TODO: Implement me
+	private int balance;
+
+	public BankAccount() {
+		balance = 0;
 	}
 
-	public int getBalance() {
-		//TODO: Implement me
-		return 0;
+	public synchronized void deposit(int dollarsToDeposit) {
+		balance += dollarsToDeposit;
 	}
 
-	public int withdraw(int amountToWithdraw) {
-		//TODO: Implement me
-		return 0;
+	public synchronized int getBalance() {
+		return balance;
+	}
+
+	public synchronized int withdraw(int amountToWithdraw) {
+		int amountWithdrawn;
+		if(amountToWithdraw > balance) {
+			amountWithdrawn = balance;
+		} else {
+			amountWithdrawn = amountToWithdraw;
+		}
+		balance -= amountWithdrawn;
+		return amountWithdrawn;
 	}
 }
